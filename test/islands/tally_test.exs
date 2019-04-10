@@ -1,7 +1,7 @@
 defmodule Islands.TallyTest do
   use ExUnit.Case, async: true
 
-  alias Islands.{Board, Game, Guesses, Player, Score, Tally}
+  alias Islands.{Board, Game, Guesses, Score, Tally}
 
   doctest Tally
 
@@ -11,39 +11,36 @@ defmodule Islands.TallyTest do
     tally = Tally.new(game, :player1)
 
     poison =
-      ~s<{\"response\":[],\"request\":[],\"player2_state\":\"islands_not_set\",\"player2\":{\"name\":\"?\",\"guesses\":{\"misses\":[],\"hits\":[]},\"gender\":\"f\",\"board\":{\"misses\":[],\"islands\":{}}},\"player1_state\":\"islands_not_set\",\"player1\":{\"name\":\"Jay\",\"guesses\":{\"misses\":[],\"hits\":[]},\"gender\":\"m\",\"board\":{\"misses\":[],\"islands\":{}}},\"guesses_score\":{\"misses\":0,\"hits\":0,\"forested_types\":[]},\"guesses\":{\"misses\":[],\"hits\":[]},\"game_state\":\"initialized\",\"board_score\":{\"misses\":0,\"hits\":0,\"forested_types\":[]},\"board\":{\"misses\":[],\"islands\":{}}}>
+      ~s<{\"response\":[],\"request\":[],\"player2_state\":\"islands_not_set\",\"player1_state\":\"islands_not_set\",\"guesses_score\":{\"name\":\"?\",\"misses\":0,\"hits\":0,\"gender\":\"f\",\"forested_types\":[]},\"guesses\":{\"misses\":[],\"hits\":[]},\"game_state\":\"initialized\",\"board_score\":{\"name\":\"Jay\",\"misses\":0,\"hits\":0,\"gender\":\"m\",\"forested_types\":[]},\"board\":{\"misses\":[],\"islands\":{}}}>
 
     jason =
-      ~s<{\"board\":{\"islands\":{},\"misses\":[]},\"board_score\":{\"forested_types\":[],\"hits\":0,\"misses\":0},\"game_state\":\"initialized\",\"guesses\":{\"hits\":[],\"misses\":[]},\"guesses_score\":{\"forested_types\":[],\"hits\":0,\"misses\":0},\"player1\":{\"name\":\"Jay\",\"gender\":\"m\",\"board\":{\"islands\":{},\"misses\":[]},\"guesses\":{\"hits\":[],\"misses\":[]}},\"player1_state\":\"islands_not_set\",\"player2\":{\"name\":\"?\",\"gender\":\"f\",\"board\":{\"islands\":{},\"misses\":[]},\"guesses\":{\"hits\":[],\"misses\":[]}},\"player2_state\":\"islands_not_set\",\"request\":[],\"response\":[]}>
+      ~s<{\"board\":{\"islands\":{},\"misses\":[]},\"board_score\":{\"forested_types\":[],\"gender\":\"m\",\"hits\":0,\"misses\":0,\"name\":\"Jay\"},\"game_state\":\"initialized\",\"guesses\":{\"hits\":[],\"misses\":[]},\"guesses_score\":{\"forested_types\":[],\"gender\":\"f\",\"hits\":0,\"misses\":0,\"name\":\"?\"},\"player1_state\":\"islands_not_set\",\"player2_state\":\"islands_not_set\",\"request\":[],\"response\":[]}>
 
     decoded = %{
       "board" => %{"islands" => %{}, "misses" => []},
-      "board_score" => %{"forested_types" => [], "hits" => 0, "misses" => 0},
       "game_state" => "initialized",
       "guesses" => %{"hits" => [], "misses" => []},
-      "guesses_score" => %{"forested_types" => [], "hits" => 0, "misses" => 0},
-      "player1" => %{
-        "board" => %{"islands" => %{}, "misses" => []},
-        "gender" => "m",
-        "guesses" => %{"hits" => [], "misses" => []},
-        "name" => "Jay"
-      },
       "player1_state" => "islands_not_set",
-      "player2" => %{
-        "board" => %{"islands" => %{}, "misses" => []},
-        "gender" => "f",
-        "guesses" => %{"hits" => [], "misses" => []},
-        "name" => "?"
-      },
       "player2_state" => "islands_not_set",
       "request" => [],
-      "response" => []
+      "response" => [],
+      "board_score" => %{
+        "forested_types" => [],
+        "hits" => 0,
+        "misses" => 0,
+        "gender" => "m",
+        "name" => "Jay"
+      },
+      "guesses_score" => %{
+        "forested_types" => [],
+        "hits" => 0,
+        "misses" => 0,
+        "gender" => "f",
+        "name" => "?"
+      }
     }
 
-    {:ok,
-     json: %{poison: poison, jason: jason, decoded: decoded},
-     pid: this,
-     tally: tally}
+    {:ok, json: %{poison: poison, jason: jason, decoded: decoded}, tally: tally}
   end
 
   describe "A tally struct" do
@@ -59,13 +56,11 @@ defmodule Islands.TallyTest do
   end
 
   describe "Tally.new/2" do
-    test "returns %Tally{} given valid args", %{tally: tally, pid: that} do
+    test "returns %Tally{} given valid args", %{tally: tally} do
       %Tally{
         game_state: :initialized,
         player1_state: :islands_not_set,
-        player1: player1,
         player2_state: :islands_not_set,
-        player2: player2,
         request: {},
         response: {},
         board: board,
@@ -76,10 +71,22 @@ defmodule Islands.TallyTest do
 
       assert board == %Board{islands: %{}, misses: MapSet.new()}
       assert guesses == %Guesses{hits: MapSet.new(), misses: MapSet.new()}
-      assert board_score == %Score{hits: 0, misses: 0, forested_types: []}
-      assert guesses_score == %Score{hits: 0, misses: 0, forested_types: []}
-      assert player1 == %Player{name: "Jay", gender: :m, pid: that}
-      assert player2 == %Player{name: "?", gender: :f, pid: nil}
+
+      assert board_score == %Score{
+               name: "Jay",
+               gender: :m,
+               hits: 0,
+               misses: 0,
+               forested_types: []
+             }
+
+      assert guesses_score == %Score{
+               name: "?",
+               gender: :f,
+               hits: 0,
+               misses: 0,
+               forested_types: []
+             }
     end
 
     test "returns {:error, ...} given invalid args" do

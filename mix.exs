@@ -4,7 +4,7 @@ defmodule Islands.Tally.MixProject do
   def project do
     [
       app: :islands_tally,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       name: "Islands Tally",
@@ -52,7 +52,6 @@ defmodule Islands.Tally.MixProject do
       {:islands_board, "~> 0.1"},
       {:islands_game, "~> 0.1"},
       {:islands_guesses, "~> 0.1"},
-      {:islands_player, "~> 0.1"},
       {:islands_player_id, "~> 0.1"},
       {:islands_request, "~> 0.1"},
       {:islands_response, "~> 0.1"},
