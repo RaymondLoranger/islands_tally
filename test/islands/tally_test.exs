@@ -7,14 +7,18 @@ defmodule Islands.TallyTest do
 
   setup_all do
     this = self()
-    game = Game.new("Tetra", "Jay", :m, this)
-    tally = Tally.new(game, :player1)
+
+    tally =
+      "Tetra"
+      |> Game.new("Jay", :m, this)
+      |> Game.update_player(:player2, "Kim", :f, this)
+      |> Tally.new(:player1)
 
     poison =
-      ~s<{\"response\":[],\"request\":[],\"player2_state\":\"islands_not_set\",\"player1_state\":\"islands_not_set\",\"guesses_score\":{\"name\":\"?\",\"misses\":0,\"hits\":0,\"gender\":\"f\",\"forested_types\":[]},\"guesses\":{\"misses\":[],\"hits\":[]},\"game_state\":\"initialized\",\"board_score\":{\"name\":\"Jay\",\"misses\":0,\"hits\":0,\"gender\":\"m\",\"forested_types\":[]},\"board\":{\"misses\":[],\"islands\":{}}}>
+      ~s<{\"response\":[],\"request\":[],\"player2_state\":\"islands_not_set\",\"player1_state\":\"islands_not_set\",\"guesses_score\":{\"name\":\"Kim\",\"misses\":0,\"hits\":0,\"gender\":\"f\",\"forested_types\":[]},\"guesses\":{\"misses\":[],\"hits\":[]},\"game_state\":\"initialized\",\"board_score\":{\"name\":\"Jay\",\"misses\":0,\"hits\":0,\"gender\":\"m\",\"forested_types\":[]},\"board\":{\"misses\":[],\"islands\":{}}}>
 
     jason =
-      ~s<{\"board\":{\"islands\":{},\"misses\":[]},\"board_score\":{\"forested_types\":[],\"gender\":\"m\",\"hits\":0,\"misses\":0,\"name\":\"Jay\"},\"game_state\":\"initialized\",\"guesses\":{\"hits\":[],\"misses\":[]},\"guesses_score\":{\"forested_types\":[],\"gender\":\"f\",\"hits\":0,\"misses\":0,\"name\":\"?\"},\"player1_state\":\"islands_not_set\",\"player2_state\":\"islands_not_set\",\"request\":[],\"response\":[]}>
+      ~s<{\"board\":{\"islands\":{},\"misses\":[]},\"board_score\":{\"forested_types\":[],\"gender\":\"m\",\"hits\":0,\"misses\":0,\"name\":\"Jay\"},\"game_state\":\"initialized\",\"guesses\":{\"hits\":[],\"misses\":[]},\"guesses_score\":{\"forested_types\":[],\"gender\":\"f\",\"hits\":0,\"misses\":0,\"name\":\"Kim\"},\"player1_state\":\"islands_not_set\",\"player2_state\":\"islands_not_set\",\"request\":[],\"response\":[]}>
 
     decoded = %{
       "board" => %{"islands" => %{}, "misses" => []},
@@ -36,7 +40,7 @@ defmodule Islands.TallyTest do
         "hits" => 0,
         "misses" => 0,
         "gender" => "f",
-        "name" => "?"
+        "name" => "Kim"
       }
     }
 
@@ -81,7 +85,7 @@ defmodule Islands.TallyTest do
              }
 
       assert guesses_score == %Score{
-               name: "?",
+               name: "Kim",
                gender: :f,
                hits: 0,
                misses: 0,
