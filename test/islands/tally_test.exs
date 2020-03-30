@@ -1,7 +1,7 @@
 defmodule Islands.TallyTest do
   use ExUnit.Case, async: true
 
-  alias Islands.{Game, Score, Tally}
+  alias Islands.{Board, Game, Guesses, Score, Tally}
 
   doctest Tally
 
@@ -15,15 +15,15 @@ defmodule Islands.TallyTest do
       |> Tally.new(:player1)
 
     poison =
-      ~s<{"response":[],"request":[],"player2_state":"islands_not_set","player1_state":"islands_not_set","guesses_score":{"name":"Kim","misses":0,"hits":0,"gender":"f","forested_types":[]},"guesses":null,"game_state":"initialized","board_score":{"name":"Jay","misses":0,"hits":0,"gender":"m","forested_types":[]},"board":null}>
+      ~s<{"response":[],"request":[],"player2_state":"islands_not_set","player1_state":"islands_not_set","guesses_score":{"name":"Kim","misses":0,"hits":0,"gender":"f","forested_types":[]},"guesses":{"misses":[],"hits":[]},"game_state":"initialized","board_score":{"name":"Jay","misses":0,"hits":0,"gender":"m","forested_types":[]},"board":{"misses":[],"islands":{}}}>
 
     jason =
-      ~s<{"board":null,"board_score":{"forested_types":[],"gender":"m","hits":0,"misses":0,"name":"Jay"},"game_state":"initialized","guesses":null,"guesses_score":{"forested_types":[],"gender":"f","hits":0,"misses":0,"name":"Kim"},"player1_state":"islands_not_set","player2_state":"islands_not_set","request":[],"response":[]}>
+      ~s<{"board":{"islands":{},"misses":[]},"board_score":{"forested_types":[],"gender":"m","hits":0,"misses":0,"name":"Jay"},"game_state":"initialized","guesses":{"hits":[],"misses":[]},"guesses_score":{"forested_types":[],"gender":"f","hits":0,"misses":0,"name":"Kim"},"player1_state":"islands_not_set","player2_state":"islands_not_set","request":[],"response":[]}>
 
     decoded = %{
-      "board" => nil,
+      "board" => %{"islands" => %{}, "misses" => []},
       "game_state" => "initialized",
-      "guesses" => nil,
+      "guesses" => %{"hits" => [], "misses" => []},
       "player1_state" => "islands_not_set",
       "player2_state" => "islands_not_set",
       "request" => [],
@@ -73,8 +73,8 @@ defmodule Islands.TallyTest do
         guesses_score: guesses_score
       } = tally
 
-      assert board == nil
-      assert guesses == nil
+      assert board == Board.new()
+      assert guesses == Guesses.new()
 
       assert board_score == %Score{
                name: "Jay",
