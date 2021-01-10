@@ -1,14 +1,14 @@
 # ┌───────────────────────────────────────────────────────────────────────┐
 # │ Inspired by the book "Functional Web Development" by Lance Halvorsen. │
+# │ Also inspired by the course "Elixir for Programmers" by Dave Thomas.  │
 # └───────────────────────────────────────────────────────────────────────┘
 defmodule Islands.Tally do
-  use PersistConfig
-
-  @book_ref Application.get_env(@app, :book_ref)
-
   @moduledoc """
   Creates a `tally` struct for the _Game of Islands_.
-  \n##### #{@book_ref}
+
+  ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
+
+  ##### Also inspired by the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
   """
 
   alias __MODULE__

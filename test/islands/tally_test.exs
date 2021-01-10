@@ -44,7 +44,7 @@ defmodule Islands.TallyTest do
       }
     }
 
-    {:ok, json: %{poison: poison, jason: jason, decoded: decoded}, tally: tally}
+    %{json: %{poison: poison, jason: jason, decoded: decoded}, tally: tally}
   end
 
   describe "A tally struct" do
