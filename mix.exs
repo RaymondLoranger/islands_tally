@@ -4,7 +4,7 @@ defmodule Islands.Tally.MixProject do
   def project do
     [
       app: :islands_tally,
-      version: "0.1.10",
+      version: "0.1.11",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Islands Tally",
@@ -57,7 +57,7 @@ defmodule Islands.Tally.MixProject do
       {:jason, "~> 1.0"},
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
-      {:poison, "~> 3.0"}
+      {:poison, "~> 4.0"}
     ]
   end
 end
