@@ -4,7 +4,7 @@ defmodule Islands.Tally.MixProject do
   def project do
     [
       app: :islands_tally,
-      version: "0.1.13",
+      version: "0.1.14",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Islands Tally",
@@ -22,6 +22,7 @@ defmodule Islands.Tally.MixProject do
   defp description do
     """
     Creates a tally struct for the Game of Islands.
+    Also displays the summary of a Game of Islands.
     """
   end
 
@@ -37,7 +38,8 @@ defmodule Islands.Tally.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Islands.Tally.App, :ok}
     ]
   end
 
@@ -46,9 +48,15 @@ defmodule Islands.Tally.MixProject do
     [
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:io_ansi_plus, "~> 0.1"},
+      {:io_ansi_table, "~> 1.0"},
       {:islands_board, "~> 0.1"},
+      {:islands_coord, "~> 0.1"},
       {:islands_game, "~> 0.1"},
+      {:islands_grid, "~> 0.1"},
       {:islands_guesses, "~> 0.1"},
+      {:islands_island, "~> 0.1"},
+      {:islands_player, "~> 0.1"},
       {:islands_player_id, "~> 0.1"},
       {:islands_request, "~> 0.1"},
       {:islands_response, "~> 0.1"},
@@ -57,6 +65,7 @@ defmodule Islands.Tally.MixProject do
       {:jason, "~> 1.0"},
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
+      {:persist_config, "~> 0.4", runtime: false},
       {:poison, "~> 4.0"}
     ]
   end

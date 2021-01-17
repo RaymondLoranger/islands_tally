@@ -5,6 +5,7 @@
 defmodule Islands.Tally do
   @moduledoc """
   Creates a `tally` struct for the _Game of Islands_.
+  Also displays the summary of a _Game of Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
 
@@ -12,10 +13,14 @@ defmodule Islands.Tally do
   """
 
   alias __MODULE__
+  alias __MODULE__.Message
+  alias IO.ANSI.Plus, as: ANSI
+  alias IO.ANSI.Table
 
   alias Islands.{
     Board,
     Game,
+    Grid,
     Guesses,
     PlayerID,
     Request,
@@ -63,6 +68,9 @@ defmodule Islands.Tally do
           guesses_score: Score.t()
         }
 
+  @doc """
+  Creates a `tally` struct for the _Game of Islands_.
+  """
   @spec new(Game.t(), PlayerID.t()) :: t | {:error, atom}
   def new(%Game{} = game, player_id) when player_id in @player_ids do
     %Tally{
@@ -79,4 +87,32 @@ defmodule Islands.Tally do
   end
 
   def new(_game, _player_id), do: {:error, :invalid_tally_args}
+
+  @doc """
+  Displays the summary of a _Game of Islands_.
+  """
+  @spec summary(t, PlayerID.t(), ANSI.ansilist()) :: t
+  def summary(tally, player_id, message \\ [])
+
+  def summary(%Tally{response: response} = tally, player_id, []),
+    do: Message.new(response, player_id, tally) |> do_summary(tally)
+
+  def summary(tally, _player_id, message), do: do_summary(message, tally)
+
+  ## Private functions
+
+  @spec do_summary(ANSI.ansilist(), t) :: t
+  defp do_summary(message, tally) do
+    ANSI.puts(message)
+    Score.format(tally.board_score, up: 0, right: 8)
+    Score.format(tally.guesses_score, up: 3, right: 41)
+    Grid.to_maps(tally.board) |> Table.format(spec_name: "left")
+    Grid.to_maps(tally.guesses) |> Table.format(spec_name: "right")
+    tally
+
+    # Default function => &Islands.Grid.Tile.new/1
+    # fun = &Islands.Tally.Tile.new/1
+    # Grid.to_maps(tally.board, fun) |> Table.format(spec_name: "left")
+    # Grid.to_maps(tally.guesses, fun) |> Table.format(spec_name: "right")
+  end
 end
