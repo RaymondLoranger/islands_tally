@@ -89,7 +89,7 @@ defmodule Islands.Tally do
   def new(_game, _player_id), do: {:error, :invalid_tally_args}
 
   @doc """
-  Displays the summary of a _Game of Islands_.
+  Displays the summary of a _Game of Islands_ for the specified player.
   """
   @spec summary(t, PlayerID.t(), ANSI.ansilist()) :: :ok
   def summary(tally, player_id, message \\ [])
