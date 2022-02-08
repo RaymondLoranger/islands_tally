@@ -61,6 +61,7 @@ defmodule Islands.Tally do
     :guesses_score
   ]
 
+  @typedoc "A tally struct for the Game of Islands"
   @type t :: %Tally{
           game_state: State.game_state(),
           player1_state: State.player_state(),
