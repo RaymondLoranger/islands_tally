@@ -1,8 +1,25 @@
 defmodule Islands.Tally.Tile do
-  alias IO.ANSI.Plus, as: ANSI
-  alias Islands.Island
+  @moduledoc """
+  Creates a tile from a cell value.
+  """
 
-  @spec new(Island.type() | nil) :: ANSI.ansidata()
+  alias IO.ANSI.Plus, as: ANSI
+
+  @doc """
+  Creates a tile (with embedded ANSI escapes) from `cell_value`.
+
+  ## Examples
+
+      iex> alias Islands.Tally.Tile
+      iex> Tile.new(:atoll) # => A sandy brown tile
+      [[[[[] | "\e[38;5;215m"] | "\e[48;5;215m"], "<a>"] | "\e[0m"]
+
+      iex> alias Islands.Tally.Tile
+      iex> Tile.new(:atoll_hit) # => An islamic green tile
+      [[[[[] | "\e[38;5;34m"] | "\e[48;5;34m"], ">a<"] | "\e[0m"]
+  """
+  @spec new(atom) :: ANSI.ansidata()
+  def new(cell_value)
   def new(:atoll), do: format(:sandy_brown, "<a>")
   def new(:dot), do: format(:teak, "<d>")
   def new(:l_shape), do: format(:tenne, "<l>")
@@ -21,6 +38,8 @@ defmodule Islands.Tally.Tile do
   ## Private functions
 
   @spec format(atom, String.t()) :: ANSI.ansidata()
-  defp format(attr, value),
-    do: ANSI.format([attr, :"#{attr}_background", value], true)
+  defp format(tile_color, value) do
+    # Background color same as foreground color making `value` invisible...
+    ANSI.format([tile_color, :"#{tile_color}_background", value], _emit? = true)
+  end
 end

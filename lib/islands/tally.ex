@@ -4,8 +4,13 @@
 # └───────────────────────────────────────────────────────────────────────┘
 defmodule Islands.Tally do
   @moduledoc """
-  Creates a `tally` struct for the _Game of Islands_.
+  Creates a tally struct for the _Game of Islands_.
   Also displays the summary of a _Game of Islands_.
+
+  The tally struct contains the fields `game_state`, `player1_state`,
+  `player2_state`, `request`, `response`, `board`, `board_score`, `guesses` and
+  `guesses_score` representing the characteristics of a tally in the _Game of
+  Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
 
@@ -69,7 +74,7 @@ defmodule Islands.Tally do
         }
 
   @doc """
-  Creates a `tally` struct for the _Game of Islands_.
+  Creates a tally struct for the specified player.
   """
   @spec new(Game.t(), PlayerID.t()) :: t | {:error, atom}
   def new(%Game{} = game, player_id) when player_id in @player_ids do
@@ -89,7 +94,7 @@ defmodule Islands.Tally do
   def new(_game, _player_id), do: {:error, :invalid_tally_args}
 
   @doc """
-  Displays the summary of a _Game of Islands_ for the specified player.
+  Displays the summary of a game for the specified player.
   """
   @spec summary(t, PlayerID.t(), ANSI.ansilist()) :: :ok
   def summary(tally, player_id, message \\ [])

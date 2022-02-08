@@ -1,6 +1,6 @@
 # Islands Tally
 
-Creates a `tally` struct for the _Game of Islands_.
+Creates a tally struct for the _Game of Islands_.
 Also displays the summary of a _Game of Islands_.
 
 ## Installation
