@@ -14,11 +14,8 @@ defmodule Islands.TallyTest do
       |> Game.update_player(:player2, "Kim", :f, this)
       |> Tally.new(:player1)
 
-    poison =
-      ~s<{"response":[],"request":[],"player2_state":"islands_not_set","player1_state":"islands_not_set","guesses_score":{"name":"Kim","misses":0,"hits":0,"gender":"f","forested_types":[]},"guesses":{"misses":[],"hits":[]},"game_state":"initialized","board_score":{"name":"Jay","misses":0,"hits":0,"gender":"m","forested_types":[]},"board":{"misses":[],"islands":{}}}>
-
     jason =
-      ~s<{"board":{"islands":{},"misses":[]},"board_score":{"forested_types":[],"gender":"m","hits":0,"misses":0,"name":"Jay"},"game_state":"initialized","guesses":{"hits":[],"misses":[]},"guesses_score":{"forested_types":[],"gender":"f","hits":0,"misses":0,"name":"Kim"},"player1_state":"islands_not_set","player2_state":"islands_not_set","request":[],"response":[]}>
+      ~s<{"request":[],"response":[],"game_state":"initialized","player1_state":"islands_not_set","player2_state":"islands_not_set","board":{"islands":{},"misses":[]},"guesses":{"hits":[],"misses":[]},"board_score":{"name":"Jay","hits":0,"misses":0,"forested_types":[],"gender":"m"},"guesses_score":{"name":"Kim","hits":0,"misses":0,"forested_types":[],"gender":"f"}}>
 
     decoded = %{
       "board" => %{"islands" => %{}, "misses" => []},
@@ -44,15 +41,10 @@ defmodule Islands.TallyTest do
       }
     }
 
-    %{json: %{poison: poison, jason: jason, decoded: decoded}, tally: tally}
+    %{json: %{jason: jason, decoded: decoded}, tally: tally}
   end
 
   describe "A tally struct" do
-    test "can be encoded by Poison", %{tally: tally, json: json} do
-      assert Poison.encode!(tally) == json.poison
-      assert Poison.decode!(json.poison) == json.decoded
-    end
-
     test "can be encoded by Jason", %{tally: tally, json: json} do
       assert Jason.encode!(tally) == json.jason
       assert Jason.decode!(json.jason) == json.decoded

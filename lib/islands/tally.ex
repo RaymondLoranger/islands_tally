@@ -36,7 +36,6 @@ defmodule Islands.Tally do
 
   @player_ids [:player1, :player2]
 
-  @derive [Poison.Encoder]
   @derive Jason.Encoder
   @enforce_keys [
     :game_state,
