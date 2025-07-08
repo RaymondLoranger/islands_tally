@@ -9,7 +9,7 @@ defmodule Islands.Tally.App do
   @right_options get_env(:right_options)
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
-  def start(_start_type, :ok = _start_args) do
+  def start(_start_type, _start_args = :ok) do
     {:ok, _pid} = Table.start(@headers, @left_options)
     {:ok, _pid} = Table.start(@headers, @right_options)
     {:ok, self()}

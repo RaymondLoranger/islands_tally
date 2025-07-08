@@ -9,7 +9,7 @@ defmodule Islands.Tally do
 
   The tally struct contains the fields `game_state`, `player1_state`,
   `player2_state`, `request`, `response`, `board`, `board_score`, `guesses` and
-  `guesses_score` representing the characteristics of a tally in the _Game of
+  `guesses_score` representing the properties of a tally in the _Game of
   Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/) by Lance Halvorsen.
@@ -36,7 +36,7 @@ defmodule Islands.Tally do
 
   @player_ids [:player1, :player2]
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   @enforce_keys [
     :game_state,
     :player1_state,

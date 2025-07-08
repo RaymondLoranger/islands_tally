@@ -14,8 +14,8 @@ defmodule Islands.TallyTest do
       |> Game.update_player(:player2, "Kim", :f, this)
       |> Tally.new(:player1)
 
-    jason =
-      ~s<{"request":[],"response":[],"game_state":"initialized","player1_state":"islands_not_set","player2_state":"islands_not_set","board":{"islands":{},"misses":[]},"guesses":{"hits":[],"misses":[]},"board_score":{"name":"Jay","hits":0,"misses":0,"forested_types":[],"gender":"m"},"guesses_score":{"name":"Kim","hits":0,"misses":0,"forested_types":[],"gender":"f"}}>
+    encoded =
+      ~s<{"game_state":"initialized","player1_state":"islands_not_set","player2_state":"islands_not_set","request":[],"response":[],"board":{"islands":{},"misses":[]},"board_score":{"name":"Jay","gender":"m","hits":0,"misses":0,"forested_types":[]},"guesses":{"hits":[],"misses":[]},"guesses_score":{"name":"Kim","gender":"f","hits":0,"misses":0,"forested_types":[]}}>
 
     decoded = %{
       "board" => %{"islands" => %{}, "misses" => []},
@@ -41,13 +41,13 @@ defmodule Islands.TallyTest do
       }
     }
 
-    %{json: %{jason: jason, decoded: decoded}, tally: tally}
+    %{json: %{encoded: encoded, decoded: decoded}, tally: tally}
   end
 
   describe "A tally struct" do
-    test "can be encoded by Jason", %{tally: tally, json: json} do
-      assert Jason.encode!(tally) == json.jason
-      assert Jason.decode!(json.jason) == json.decoded
+    test "can be encoded by JSON", %{tally: tally, json: json} do
+      assert JSON.encode!(tally) == json.encoded
+      assert JSON.decode!(json.encoded) == json.decoded
     end
   end
 
