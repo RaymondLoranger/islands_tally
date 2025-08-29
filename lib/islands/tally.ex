@@ -4,13 +4,22 @@
 # └───────────────────────────────────────────────────────────────────────┘
 defmodule Islands.Tally do
   @moduledoc """
-  Creates a tally struct for the _Game of Islands_.
+  Creates a tally struct for the _Game of Islands_.\s\s
   Also displays the summary of a _Game of Islands_.
 
-  The tally struct contains the fields `game_state`, `player1_state`,
-  `player2_state`, `request`, `response`, `board`, `board_score`, `guesses` and
-  `guesses_score` representing the properties of a tally in the _Game of
-  Islands_.
+  The tally struct contains the fields:
+
+    - `game_state`
+    - `player1_state`
+    - `player2_state`
+    - `request`
+    - `response`
+    - `board`
+    - `board_score`
+    - `guesses`
+    - `guesses_score`
+
+  representing the properties of a tally in the _Game of Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/) by Lance Halvorsen.
 
